@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "ithumba-materials",
+  "private_key_id": "49db6608a97d42ff5eab2117a273eb13abd0d753",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDjAqv0My7FGX1w\nXgpVuJqoMDTDeEZVvIjNU3LS5yDd6XMDCQrn2mcbU0B+lp1gYTmuJ89iLGJtA7VQ\nr6UE6AZZifzZ+fC/WoF5un5I19FpPruqkQEmO3yorALljPXYlBgInYAt9yGr02Ya\nfZJjnIJGYwZVLwe5CwAKxoEG4/KlWpPTyXjcTxjmZE7FTvRHGO+PmCDmYFC/xgnq\nYwOWYox0IlvPV/lFrG7hj7yuoyamLP3J9M+GR33FPTBxecBvcZ75ZEaRj8aKR409\nMFIXHZEmjf+mUf2ngoZDHqL35/38hLvlTTJsbchk2NXKNBivK5VqjQ/CCWudSYAO\nuz3AQVmZAgMBAAECggEAGSuKKlTkeikl3egnaDLEPyK9LvEuh0IUvwNiJ11GKSTB\nwlPl2ChAp2h3LbIAeBe/n/49AcsfDKxNFcmr19vsHFBu7zJFzcm4smkJqIT5bJxu\njW5vfLA61a7g0VfsSFu/QHFKLY6JtrYFS6mhqhbH4QsIwDgrOIquMgOpebybglbP\ntm5xZrur8ccrbh+wsmeBhwefjUu1V+kTwzK+us/7L4yJWFNwLni+HbG9aQ9/GIst\n7qWdciomJEySaMTnfwN7bmVH/f5bPV1QnESN23ZdjIWjbvCd5+J2LibN4I7G3Rt3\nZ1Ya5iwFchhgc6J7pJUGs2XQkpZ0SO0mOPMwK8vHewKBgQD1mx7VL4AQUAltwiWB\n6rrjDmMae0hMWZPRzAr5L2nyAgzphrb7zb7Yw3qGhrhqo8130e0WBXCHiruJz7X5\n/4NGx6pfFfwMloBkbGzqXwOPInHVe+muyfiS/eOcVSzZEpox0Ww4KqISH9uSQI76\niXeHv3Yn4cOTbNn9bkeSPEyW8wKBgQDsnha2unU1PksNo316G616R9jcLiLvAqN1\n4opaEr73gUud1UH5Xglcv1Yek4xh7KBdg10jCwJRwiKTMMDA7TXUFd6HqiOZIKjG\nOJAtE/TW834NpOIjsNYiGt3pXUBwtyxQTp/ztkl/RWaVLuT2cMpcmqvysfY6ktp2\nu6uX9pjIQwKBgECrH2synp2s9U6ZGBclHyA54Y5Pd7HixDExcJI8EcFPGOdEOVoD\nyoR4tAJH5rbtemRaOfraY87MkKSwtFGnHYG9gPaYa01FM3k9s0/ixKUjhKWZguYq\n9/B8OTooky5033TOl5gSYao0CTRxGzSMjZSIrSvDHiPrPVqlduLiTahRAoGAKX+Y\ncDfHcq0YMK4pxY6xIC8Vo5gb3FtUG8q9hQqgn3v3rRjH11pcvf14tygdiNcdUQlG\n/mxh3cD0m2gDhlKUDDxBqP13/NUzhIBLGPzVBhXyV6ZBWw0aoSShItqOALa/eN4x\nQ2cHAOFFGoj88xPZCeC+o3P+wUscMZK8h4xiQ00CgYEArN+Ptqxw+GrADA9b9iqE\nCNYIZy+k5Ts8tI+Dva4l3j/lCQr1mcaTcNiV7iZj28pHgYFRAZTTMeJ8qDJ6cUzH\n0L77eRd1UzOAKkIICdUl7sHc3+yey5yDBkqVAAeDvHgBl75LdclrlS1gcU/iKXZV\nxARFj6B7krp5pSe323xvq6I=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@ithumba-materials.iam.gserviceaccount.com",
+  "client_id": "114918941653505262583",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40ithumba-materials.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

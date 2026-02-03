@@ -4,7 +4,6 @@
 # Environment & Secrets
 # -------------------------------
 .env
-ithumba-materials-key.json
 *.pem
 *.key
 *.crt
