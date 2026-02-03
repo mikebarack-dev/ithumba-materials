@@ -14,11 +14,19 @@ dotenv.config();
 
 // 2. Initialize Firebase Admin SDK
 try {
-    // Log the resolved path before attempting to load the file
-    const serviceAccountPath = path.resolve(__dirname, process.env.SERVICE_ACCOUNT_PATH);
-    console.log("Resolved Service Account Path:", serviceAccountPath);
-
-    const serviceAccount = require(serviceAccountPath);
+    let serviceAccount;
+    
+    // Try to load from environment variable first (for Render)
+    if (process.env.FIREBASE_KEY_JSON) {
+        console.log("Loading Firebase key from environment variable...");
+        serviceAccount = JSON.parse(process.env.FIREBASE_KEY_JSON);
+    } else {
+        // Fall back to file (for local development)
+        const serviceAccountPath = path.resolve(__dirname, process.env.SERVICE_ACCOUNT_PATH || 'ithumba-materials-key.json');
+        console.log("Resolved Service Account Path:", serviceAccountPath);
+        serviceAccount = require(serviceAccountPath);
+    }
+    
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         storageBucket: 'ithumba-materials.appspot.com'
@@ -26,7 +34,6 @@ try {
     console.log("✅ Firebase Admin SDK initialized.");
 } catch (error) {
     console.error("❌ CRITICAL ERROR: Could not load Firebase Key.");
-    console.error(`Attempted path: ${process.env.SERVICE_ACCOUNT_PATH}`);
     console.error("Error details:", error.message);
     process.exit(1); // Stop server if we can't login
 }
