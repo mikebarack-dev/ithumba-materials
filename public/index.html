@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ithumba Materials - Home</title>
+    <link rel="stylesheet" href="./style.css"> 
+    
+</head>
+
+<body>
+    <nav class="navbar-container">
+        <div class="navbar-logo">Ithumba Materials</div>
+        <input id="search-bar" type="text" placeholder="Search for products..." style="margin: 10px; padding: 5px; width: 300px;">
+        <div id="nav-links" class="nav-links">
+            <a href="https://wa.me/254704713885" target="_blank" class="nav-btn" style="color: #25d366; font-size: 18px; text-decoration: none;" title="Chat with us on WhatsApp">💬 WhatsApp</a>
+            <button id="cart-btn" class="nav-btn cart-btn" onclick="location.href='/cart.html'">Cart <span class="cart-badge">0</span></button>
+            <a href="order-history.html" class="navbar-link nav-btn">📦 My Orders</a>
+            <a href="profile.html" class="navbar-link nav-btn">Profile</a>
+            <a href="login.html" class="navbar-link nav-btn">Login</a>
+            <a href="/messages" class="navbar-link nav-btn" style="position: relative;">Messages <span id="unread-badge" class="unread-badge" style="position: absolute; top: -8px; right: -8px; background: #ff6b35; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; display: none;">0</span></a>
+        </div>
+    </nav>
+
+    <h1>Welcome to Ithumba Materials</h1>
+
+    <section>
+        <h2>Shop By Category</h2>
+        <div class="category-container">
+            <a class="category-card" href="structural.html">Structural Materials</a>
+            <a class="category-card" href="plumbing.html">Plumbing</a>
+            <a class="category-card" href="paints.html">Paints & Chemicals</a>
+            <a class="category-card" href="tools.html">Tools & Hardware</a>
+            <a class="category-card" href="fencing-roofing.html">Fencing & Roofing</a>
+            <a class="category-card" href="brushes.html">Brushes & Applicators</a>
+        </div>
+    </section>
+
+    <section>
+        <h2>Featured Products</h2>
+        <section id="featured-products" class="product-grid"></section>
+    </section>
+
+    <section>
+        <h2>All Products</h2>
+        <div id="all-products" style="width: 100%; padding: 0 20px;"></div>
+    </section>
+
+    <!-- Add placeholders for loading indicators -->
+    <div id="loading-featured" style="display: none;">Loading Featured Products...</div>
+    <div id="loading-all" style="display: none;">Loading All Products...</div>
+
+    <div id="error-message" class="feedback-message" style="display: none;"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>Ithumba Materials is your trusted supplier of quality building materials at competitive prices.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#categories">Categories</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="messages">Messages</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: <a href="mailto:ithumbaenterprises@gmail.com" style="color: #ff6b35; text-decoration: none;">ithumbaenterprises@gmail.com</a></p>
+                <p>Phone: <a href="tel:+254704713885" style="color: #ff6b35; text-decoration: none;">+254 704 713 885</a></p>
+                <p><a href="https://wa.me/254704713885" target="_blank" style="color: #25d366; text-decoration: none; font-weight: bold;">💬 Chat on WhatsApp</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Policies</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Return Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Ithumba Materials. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Load Firebase config first, then homepage as module -->
+    <script src="./config.js"></script>
+    <script type="module" src="./js/homepage.js"></script>
+
+    <script>
+        // Mobile navigation logic (non-module script)
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+
+            function checkWidth() {
+                if (menuToggle && navLinks) {
+                    if(window.innerWidth <= 768){
+                        menuToggle.style.display = 'block';
+                        navLinks.style.display = 'none';
+                        navLinks.style.flexDirection = 'column';
+                        navLinks.style.backgroundColor = '#6a2e35';
+                        navLinks.style.position = 'absolute';
+                        navLinks.style.top = '50px';
+                        navLinks.style.right = '10px';
+                        navLinks.style.padding = '10px';
+                        navLinks.style.borderRadius = '5px';
+                    } else {
+                        menuToggle.style.display = 'none';
+                        navLinks.style.display = 'flex';
+                        navLinks.style.position = 'static';
+                        navLinks.style.flexDirection = 'row';
+                        navLinks.style.backgroundColor = 'transparent';
+                    }
+                }
+            }
+
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+                });
+
+                window.addEventListener('resize', checkWidth);
+                window.addEventListener('load', checkWidth);
+            } else {
+                console.error('menuToggle or navLinks element not found.');
+            }
+
+            const searchBar = document.getElementById('search-bar');
+            if (searchBar) {
+                searchBar.addEventListener('input', function() {
+                    const query = this.value.toLowerCase();
+                    const products = document.querySelectorAll('.product-grid > div');
+                    products.forEach(product => {
+                        const productName = product.textContent.toLowerCase();
+                        product.style.display = productName.includes(query) ? '' : 'none';
+                    });
+                });
+            }
+
+            const applyFilter = document.getElementById('apply-filter');
+            if (applyFilter) {
+                applyFilter.addEventListener('click', function() {
+                    const priceFilter = document.getElementById('price-filter');
+                    if (priceFilter) {
+                        const maxPrice = parseFloat(priceFilter.value);
+                        const products = document.querySelectorAll('.product-grid > div');
+                        products.forEach(product => {
+                            const price = parseFloat(product.getAttribute('data-price'));
+                            product.style.display = price <= maxPrice ? '' : 'none';
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Add missing menuToggle and navLinks elements -->
+    <button id="menu-toggle" style="display: none;">☰</button>
+    <nav id="nav-links" style="display: flex;">
+        <a href="index.html">Home</a>
+        <a href="profile.html">Profile</a>
+        <a href="login.html">Login</a>
+    </nav>
+
+    <!-- Initialize cart from server on page load -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Clear old localStorage cart to sync with server
+            localStorage.removeItem('cart');
+        });
+        
+        // Update cart badge when auth state changes or on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Wait a bit for Firebase to initialize
+            setTimeout(async () => {
+                try {
+                    // Try to get the current user from Firebase
+                    const unsubscribe = getAuth && getAuth().onAuthStateChanged ? 
+                        getAuth().onAuthStateChanged(async (user) => {
+                            if (user) {
+                                // User is logged in - fetch cart from server
+                                const token = await user.getIdToken(true);
+                                const response = await fetch('/api/cart', {
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`
+                                    }
+                                });
+                                if (response.ok) {
+                                    const cartItems = await response.json();
+                                    const count = Array.isArray(cartItems) ? cartItems.length : 0;
+                                    const badge = document.querySelector('.cart-badge');
+                                    if (badge) {
+                                        badge.textContent = count;
+                                        console.log('✅ Cart badge updated to:', count);
+                                    }
+                                }
+                            } else {
+                                // No user - set badge to 0
+                                const badge = document.querySelector('.cart-badge');
+                                if (badge) badge.textContent = '0';
+                            }
+                        }) : null;
+                } catch (error) {
+                    console.error('Error updating cart badge:', error);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

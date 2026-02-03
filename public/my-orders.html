@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Ithumba Materials</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .orders-container {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .orders-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+        }
+
+        .orders-header h1 {
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .order-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .order-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .order-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .order-status.paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .order-status.processing {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .order-status.shipped {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .order-status.delivered {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .order-status.cancelled {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-detail {
+            font-size: 14px;
+        }
+
+        .order-detail-label {
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .order-detail-value {
+            color: #333;
+            font-size: 15px;
+        }
+
+        .order-items {
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .order-items h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .items-table th {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .items-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .items-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tracking-info {
+            margin-top: 15px;
+            padding: 12px;
+            background: #e7f3ff;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .tracking-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .tracking-number {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #e05a2a;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="orders-container">
+        <a href="/index.html" class="back-link">← Back to Shop</a>
+        
+        <div class="orders-header">
+            <h1>📦 My Orders</h1>
+            <p>View and track your orders</p>
+        </div>
+
+        <div id="orders-loading" class="loading">
+            <div class="spinner"></div>
+            <p>Loading your orders...</p>
+        </div>
+
+        <div id="orders-content" style="display: none;">
+            <div id="orders-list"></div>
+        </div>
+
+        <div id="no-orders" style="display: none;" class="no-orders">
+            <p>You haven't placed any orders yet.</p>
+            <a href="/index.html" class="back-link">Continue Shopping →</a>
+        </div>
+    </div>
+
+    <script type="module">
+        let userEmail = null;
+        let userId = null;
+
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDCEW85bOA2DvhyH9MpYH9NBZC0MvLQaEI",
+            authDomain: "ithumba-materials.firebaseapp.com",
+            projectId: "ithumba-materials",
+            storageBucket: "ithumba-materials.appspot.com",
+            messagingSenderId: "852098762752",
+            appId: "1:852098762752:web:7c4ecd3d3aca87d26ba48a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Check if user is logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userEmail = user.email;
+                userId = user.uid;
+                console.log('👤 User logged in - Email:', userEmail, 'UID:', userId);
+                loadCustomerOrders();
+            } else {
+                window.location.href = '/login.html';
+            }
+        });
+
+        async function loadCustomerOrders() {
+            try {
+                // Try by userId first (most reliable)
+                console.log('📦 Loading orders for userId:', userId);
+                
+                const response = await fetch(`/api/admin/orders/customer/all?userId=${encodeURIComponent(userId)}`);
+                const data = await response.json();
+                
+                console.log('📡 API Response:', data);
+
+                const loadingEl = document.getElementById('orders-loading');
+                const contentEl = document.getElementById('orders-content');
+                const noOrdersEl = document.getElementById('no-orders');
+
+                if (data.success && data.orders && data.orders.length > 0) {
+                    console.log('✅ Found', data.orders.length, 'orders');
+                    loadingEl.style.display = 'none';
+                    noOrdersEl.style.display = 'none';
+                    contentEl.style.display = 'block';
+
+                    const html = data.orders.map(order => {
+                        const statusClass = order.status.toLowerCase();
+                        const createdDate = new Date(order.createdAt).toLocaleDateString();
+                        
+                        return `
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div>
+                                        <div class="order-id">Order #${order.orderId}</div>
+                                        <small style="color: #999;">${createdDate}</small>
+                                    </div>
+                                    <span class="order-status ${statusClass}">${order.status.toUpperCase()}</span>
+                                </div>
+
+                                <div class="order-details">
+                                    <div class="order-detail">
+                                        <div class="order-detail-label">Total Amount</div>
+                                        <div class="order-detail-value">KSh ${(order.total || 0).toLocaleString()}</div>
+                                    </div>
+                                    <div class="order-detail">
+                                        <div class="order-detail-label">Payment Method</div>
+                                        <div class="order-detail-value">${order.paymentMethod || 'N/A'}</div>
+                                    </div>
+                                    <div class="order-detail">
+                                        <div class="order-detail-label">Items</div>
+                                        <div class="order-detail-value">${(order.items || []).length} item(s)</div>
+                                    </div>
+                                </div>
+
+                                <div class="order-items">
+                                    <h4>Items Ordered</h4>
+                                    <table class="items-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th style="text-align: center;">Qty</th>
+                                                <th style="text-align: right;">Price</th>
+                                                <th style="text-align: right;">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${(order.items || []).map(item => `
+                                                <tr>
+                                                    <td>${item.name}</td>
+                                                    <td style="text-align: center;">${item.quantity}</td>
+                                                    <td style="text-align: right;">KSh ${(item.price || 0).toLocaleString()}</td>
+                                                    <td style="text-align: right;">KSh ${(item.subtotal || 0).toLocaleString()}</td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                ${order.trackingNumber ? `
+                                    <div class="tracking-info">
+                                        <div class="tracking-label">📍 Tracking Number:</div>
+                                        <div class="tracking-number">${order.trackingNumber}</div>
+                                    </div>
+                                ` : ''}
+
+                                ${order.notes ? `
+                                    <div style="margin-top: 15px; padding: 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px;">
+                                        <strong>Notes:</strong> ${order.notes}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('');
+
+                    document.getElementById('orders-list').innerHTML = html;
+                } else {
+                    console.log('⚠️ No orders found or API error:', data.message);
+                    loadingEl.style.display = 'none';
+                    contentEl.style.display = 'none';
+                    noOrdersEl.style.display = 'block';
+                    noOrdersEl.innerHTML = `
+                        <p>📭 You haven't placed any orders yet.</p>
+                        <p style="font-size: 12px; color: #999;">Account ID: <strong>${userId}</strong></p>
+                        <p style="font-size: 12px; color: #999;">Email: <strong>${userEmail}</strong></p>
+                        ${data.message ? `<p style="font-size: 12px; color: #999;">Error: ${data.message}</p>` : ''}
+                        <a href="/index.html" class="back-link">Continue Shopping →</a>
+                    `;
+                }
+            } catch (err) {
+                console.error('❌ Error loading orders:', err);
+                document.getElementById('orders-loading').innerHTML = `
+                    <p style="color: red;">❌ Error loading orders: ${err.message}</p>
+                    <p style="color: red; font-size: 12px;">User ID: ${userId}</p>
+                    <p style="color: red; font-size: 12px;">Email: ${userEmail}</p>
+                `;
+            }
+        }
+    </script>
+
+    <!-- WebSocket Notifications Container -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <script src="/config.js"></script>
+    <script type="module" src="/js/order-history.js"></script>
+</body>
+</html>

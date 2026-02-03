@@ -1,0 +1,67 @@
+
+
+# -------------------------------
+# Environment & Secrets
+# -------------------------------
+.env
+ithumba-materials-key.json
+*.pem
+*.key
+*.crt
+
+# -------------------------------
+# Node.js
+# -------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -------------------------------
+# Build / Distribution
+# -------------------------------
+dist/
+build/
+out/
+.cache/
+*.min.js
+*.bundle.js
+
+# -------------------------------
+# Firebase / Firestore
+# -------------------------------
+firebase-debug.log
+firestore-export.json
+firebase-export/
+
+# -------------------------------
+# VS Code & IDE settings
+# -------------------------------
+.vscode/
+*.code-workspace
+.idea/
+
+# -------------------------------
+# OS & Misc
+# -------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# -------------------------------
+# Logs
+# -------------------------------
+*.log
+logs/
+pids/
+*.pid
+*.seed
+*.backup
+
+# -------------------------------
+# Temporary / Cache
+# -------------------------------
+tmp/
+temp/
+.cache/

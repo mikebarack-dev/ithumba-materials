@@ -1,0 +1,75 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structural Materials | Ithumba Materials</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar-container" style="background-color: #6a2e35; color: white;">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo">Ithumba Materials</a>
+            <button id="menu-toggle">☰</button>
+            <ul id="nav-links">
+                <li><a href="structural.html">Structural</a></li>
+                <li><a href="plumbing.html">Plumbing</a></li>
+                <li><a href="fencing-roofing.html">Fencing & Roofing</a></li>
+                <li><a href="paints.html">Paints</a></li>
+                <li><a href="tools.html">Tools</a></li>
+                <li><a href="brushes.html">Brushes</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Title -->
+    <h1>Structural Materials</h1>
+
+    <!-- Products Grid -->
+    <div id="product-grid" class="product-grid"></div>
+
+    <!-- Loading and Messages -->
+    <div id="loading-indicator" class="feedback-message">Loading structural materials...</div>
+    <div id="no-products-message" class="feedback-message" style="display: none;">No structural materials found in inventory.</div>
+    <div id="error-message" class="feedback-message" style="display: none;">Failed to load products.</div>
+
+    <!-- Config + JS -->
+    <script src="./config.js"></script>
+    <script type="module" src="./js/structural.js"></script>
+
+    <!-- Mobile Navbar Logic -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+
+        function checkWidth() {
+            if (window.innerWidth <= 768) {
+                menuToggle.style.display = 'block';
+                navLinks.style.display = 'none';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.backgroundColor = 'var(--primary-color)';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '50px';
+                navLinks.style.right = '10px';
+                navLinks.style.padding = '10px';
+                navLinks.style.borderRadius = '5px';
+            } else {
+                menuToggle.style.display = 'none';
+                navLinks.style.display = 'flex';
+                navLinks.style.position = 'static';
+                navLinks.style.flexDirection = 'row';
+                navLinks.style.backgroundColor = 'transparent';
+            }
+        }
+
+        checkWidth();
+        window.addEventListener('resize', checkWidth);
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+        });

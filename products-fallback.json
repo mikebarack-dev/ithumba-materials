@@ -1,0 +1,154 @@
+{
+  "products": [
+    {
+      "id": "2",
+      "name": "Sand",
+      "category": "Structural Materials",
+      "price": 1500,
+      "unit": "cubic meter",
+      "description": "Fine building sand",
+      "stock": 50,
+      "image": "https://via.placeholder.com/300x300?text=Sand"
+    },
+    {
+      "id": "3",
+      "name": "Reinforcing Steel Bars 12mm",
+      "category": "Structural Materials",
+      "price": 3200,
+      "unit": "metre",
+      "description": "Grade 60 reinforcing steel",
+      "stock": 200,
+      "image": "https://via.placeholder.com/300x300?text=Rebar"
+    },
+    {
+      "id": "4",
+      "name": "Water Pipes 3/4\"",
+      "category": "Plumbing",
+      "price": 450,
+      "unit": "metre",
+      "description": "PVC water pipes",
+      "stock": 150,
+      "image": "https://via.placeholder.com/300x300?text=Pipes"
+    },
+    {
+      "id": "5",
+      "name": "Faucet Set",
+      "category": "Plumbing",
+      "price": 2800,
+      "unit": "set",
+      "description": "Chrome plated sink faucet",
+      "stock": 45,
+      "image": "https://via.placeholder.com/300x300?text=Faucet"
+    },
+    {
+      "id": "6",
+      "name": "Plastic Tank 500L",
+      "category": "Plumbing",
+      "price": 4500,
+      "unit": "piece",
+      "description": "Water storage tank",
+      "stock": 30,
+      "image": "https://via.placeholder.com/300x300?text=Tank"
+    },
+    {
+      "id": "7",
+      "name": "Emulsion Paint",
+      "category": "Paints & Chemicals",
+      "price": 1800,
+      "unit": "litre",
+      "description": "Interior/exterior wall paint",
+      "stock": 200,
+      "image": "https://via.placeholder.com/300x300?text=Paint"
+    },
+    {
+      "id": "8",
+      "name": "Enamel Paint",
+      "category": "Paints & Chemicals",
+      "price": 2500,
+      "unit": "litre",
+      "description": "High-gloss enamel paint",
+      "stock": 80,
+      "image": "https://via.placeholder.com/300x300?text=Enamel"
+    },
+    {
+      "id": "9",
+      "name": "Hammer",
+      "category": "Tools & Hardware",
+      "price": 850,
+      "unit": "piece",
+      "description": "Claw hammer with rubber grip",
+      "stock": 120,
+      "image": "https://via.placeholder.com/300x300?text=Hammer"
+    },
+    {
+      "id": "10",
+      "name": "Measuring Tape 30m",
+      "category": "Tools & Hardware",
+      "price": 650,
+      "unit": "piece",
+      "description": "Steel measuring tape",
+      "stock": 100,
+      "image": "https://via.placeholder.com/300x300?text=Tape"
+    },
+    {
+      "id": "11",
+      "name": "Spirit Level 2ft",
+      "category": "Tools & Hardware",
+      "price": 1200,
+      "unit": "piece",
+      "description": "Aluminum spirit level",
+      "stock": 60,
+      "image": "https://via.placeholder.com/300x300?text=Level"
+    },
+    {
+      "id": "12",
+      "name": "Corrugated Iron Sheets",
+      "category": "Fencing & Roofing",
+      "price": 3500,
+      "unit": "sheet",
+      "description": "Galvanized roofing sheets",
+      "stock": 300,
+      "image": "https://via.placeholder.com/300x300?text=Roofing"
+    },
+    {
+      "id": "13",
+      "name": "Wire Mesh Fencing",
+      "category": "Fencing & Roofing",
+      "price": 2800,
+      "unit": "roll",
+      "description": "Galvanized wire mesh",
+      "stock": 150,
+      "image": "https://via.placeholder.com/300x300?text=Mesh"
+    },
+    {
+      "id": "14",
+      "name": "Wooden Fence Posts",
+      "category": "Fencing & Roofing",
+      "price": 800,
+      "unit": "piece",
+      "description": "Treated timber fence post",
+      "stock": 400,
+      "image": "https://via.placeholder.com/300x300?text=Posts"
+    },
+    {
+      "id": "15",
+      "name": "Paint Brush 2 inch",
+      "category": "Brushes & Applicators",
+      "price": 280,
+      "unit": "piece",
+      "description": "Synthetic bristle brush",
+      "stock": 250,
+      "image": "https://via.placeholder.com/300x300?text=Brush"
+    },
+    {
+      "id": "16",
+      "name": "Paint Roller",
+      "category": "Brushes & Applicators",
+      "price": 450,
+      "unit": "piece",
+      "description": "Foam paint roller",
+      "stock": 180,
+      "image": "https://via.placeholder.com/300x300?text=Roller"
+    }
+  ]
+}

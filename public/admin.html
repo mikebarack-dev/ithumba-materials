@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Ithumba Materials</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ff6b35;
+            padding-bottom: 15px;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            color: #ff6b35;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #fff;
+            border-bottom: 3px solid #ff6b35;
+            color: #ff6b35;
+        }
+
+        .tab-content {
+            display: none !important;
+            width: 100%;
+        }
+
+        .tab-content.active {
+            display: block !important;
+            width: 100%;
+            visibility: visible !important;
+        }
+
+        #ordersContainer {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            min-height: 200px;
+        }
+
+        #ordersContainer table {
+            display: table !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            width: 100%;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 3px solid red;
+        }
+        #products-content {
+            display: block !important;
+            width: 100% !important;
+            min-height: 500px;
+        }
+        .products-table thead {
+            background: #333;
+            border-bottom: 2px solid #ddd;
+            color: white;
+        }
+
+        .products-table th, .products-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            color: #000;
+            background: white;
+        }
+
+        .products-table tbody tr {
+            display: table-row !important;
+            visibility: visible !important;
+            height: auto !important;
+            color: black;
+            background: white;
+        }
+
+        .products-table tr:hover {
+            background: #f0f0f0;
+        }
+
+        .products-table td {
+            display: table-cell !important;
+            visibility: visible !important;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            margin: 0 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .edit-btn {
+            background: #007bff;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #0056b3;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .form-section {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 5px rgba(255, 107, 53, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            background: #28a745;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background: #218838;
+        }
+
+        .reset-btn {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .reset-btn:hover {
+            background: #5a6268;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: #999;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b35;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state h3 {
+            color: #ff6b35;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏗️ Ithumba Materials</h1>
+        <nav>
+            <button class="nav-btn" onclick="location.href='/index.html'">Shop</button>
+            <button class="nav-btn" onclick="location.href='/messages.html'">Messages</button>
+            <button class="nav-btn" onclick="logoutAdmin()" style="background: #dc3545;">Logout</button>
+        </nav>
+    </header>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>📊 Admin Dashboard</h1>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="logout-btn" onclick="syncClientsData()" style="background: #007bff;">🔄 Sync Clients</button>
+                <div id="admin-info"></div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('products')">📦 Products</button>
+            <button class="tab-btn" onclick="switchTab('add-product')">➕ Add Product</button>
+            <button class="tab-btn" onclick="switchTab('orders')">📋 Orders</button>
+            <button class="tab-btn" onclick="switchTab('create-order')">➕ New Order</button>
+            <button class="tab-btn" onclick="switchTab('clients')">👥 Clients</button>
+            <button class="tab-btn" onclick="switchTab('reports')">📊 Reports</button>
+            <button class="tab-btn" onclick="switchTab('stats')">📈 Statistics</button>
+        </div>
+
+        <!-- Products Tab -->
+        <div id="products" class="tab-content active">
+            <div class="search-box">
+                <input type="text" id="search-products" placeholder="Search products by name...">
+            </div>
+            <div id="success-message" class="message success"></div>
+            <div id="error-message" class="message error"></div>
+            
+            <div id="products-loading" class="loading show">
+                <div class="spinner"></div>
+                <p>Loading products...</p>
+            </div>
+            
+            <div id="products-content" style="display: block !important; width: 100%; min-height: 600px; background: white; padding: 20px;">
+                <table class="products-table" style="display: table !important; width: 100%; border: 3px solid red; background: white;">
+                    <thead style="display: table-header-group; background: #333;">
+                        <tr style="display: table-row; color: white;">
+                            <th style="display: table-cell; padding: 15px; color: white; background: #333;">Name</th>
+                            <th style="display: table-cell; padding: 15px; color: white; background: #333;">Category</th>
+                            <th style="display: table-cell; padding: 15px; color: white; background: #333;">Unit</th>
+                            <th style="display: table-cell; padding: 15px; color: white; background: #333;">Price (KES)</th>
+                            <th style="display: table-cell; padding: 15px; color: white; background: #333;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-list" style="display: table-row-group;"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Product Tab -->
+        <div id="add-product" class="tab-content">
+            <div class="form-section">
+                <h2>Add New Product</h2>
+                <div id="form-success-message" class="message success"></div>
+                <div id="form-error-message" class="message error"></div>
+                
+                <form id="product-form">
+                    <div class="form-group">
+                        <label>Product Name *</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category *</label>
+                            <select id="product-category" required>
+                                <option value="">Select Category</option>
+                                <option value="Brushes & Applicators">Brushes & Applicators</option>
+                                <option value="Paints">Paints & Chemicals</option>
+                                <option value="plumbing">Plumbing</option>
+                                <option value="Tools">Tools & Hardware</option>
+                                <option value="structural">Structural Materials</option>
+                                <option value="fencing and roofing">Fencing & Roofing</option>
+                                <option value="Roofing">Roofing</option>
+                                <option value="Fencing & Wire">Fencing & Wire</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Unit *</label>
+                            <input type="text" id="product-unit" placeholder="e.g., Piece, Liter, Meter" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Price (KES) *</label>
+                            <input type="number" id="product-price" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Product Image</label>
+                            <input type="file" id="product-image-file" accept="image/*">
+                            <small style="color: #666; margin-top: 5px; display: block;">Upload JPG, PNG, or WebP (Max 5MB)</small>
+                            <div id="image-upload-progress" style="display: none; margin-top: 10px;">
+                                <div style="background: #e9ecef; height: 20px; border-radius: 4px; overflow: hidden;">
+                                    <div id="progress-bar" style="background: #ff6b35; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>SKU</label>
+                            <input type="text" id="product-sku">
+                        </div>
+                    </div>
+                    <input type="hidden" id="product-image" value="">
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="product-description" placeholder="Product description..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="product-featured" style="width: 18px; height: 18px;">
+                            <span>Featured Product (Show on homepage)</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="submit-btn">Add Product</button>
+                        <button type="reset" class="reset-btn">Clear Form</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div id="orders" class="tab-content">
+            <div style="background: white; padding: 20px; border-radius: 8px;">
+                <h2 style="margin-bottom: 20px;">📋 Order Management</h2>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <input type="text" id="ordersSearchInput" placeholder="Search by order ID, email, phone, or name" style="flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <select id="ordersStatusFilter" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <button onclick="loadOrdersFromAdmin()" style="padding: 10px 20px; background: #ff6b35; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">🔄 Refresh</button>
+                    <button onclick="switchTab('create-order')" style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">➕ Create Order</button>
+                </div>
+
+                <div id="ordersContainer" style="background: #f5f5f5; padding: 20px; border-radius: 8px;">
+                    <div style="text-align: center; color: #666;">Loading orders...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Order Tab -->
+        <div id="create-order" class="tab-content">
+            <div style="background: white; padding: 30px; border-radius: 8px;">
+                <h2>Create New Order</h2>
+                <form id="adminCreateOrderForm" onsubmit="adminCreateOrder(event)" style="max-width: 600px;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Customer Name</label>
+                        <input type="text" id="adminCustomerName" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Customer Email</label>
+                        <input type="email" id="adminCustomerEmail" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Customer Phone</label>
+                        <input type="tel" id="adminCustomerPhone" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Add Items</label>
+                        <div id="adminItemsContainer"></div>
+                        <button type="button" onclick="adminAddItemRow()" style="margin-top: 10px; padding: 8px 15px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">+ Add Item</button>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Notes</label>
+                        <textarea id="adminOrderNotes" placeholder="Any special instructions..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; min-height: 80px;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="adminMarkAsPaid">
+                            <span>Mark as Paid (Skip M-Pesa)</span>
+                        </label>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button type="button" onclick="resetAdminForm()" style="padding: 10px 20px; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer;">Clear</button>
+                        <button type="submit" style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Create Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="clients" class="tab-content">
+            <div style="margin-bottom: 20px;">
+                <h2>Live Client Data</h2>
+                <button onclick="loadClientsData()" style="padding:10px 20px;background:#ff6b35;color:white;border:none;border-radius:4px;cursor:pointer;margin-bottom:15px;">🔄 Refresh Clients</button>
+            </div>
+            <div id="clients-loading" class="loading show">
+                <div class="spinner"></div>
+                <p>Loading client data...</p>
+            </div>
+            <div id="clients-content" style="display: none;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <h3>Total Clients</h3>
+                        <div class="number" id="total-clients">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Today's Orders</h3>
+                        <div class="number" id="today-orders">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Today's Revenue</h3>
+                        <div class="number" id="today-revenue">KES 0</div>
+                    </div>
+                </div>
+                <h3>Client List</h3>
+                <div style="overflow-x: auto;">
+                    <table style="width:100%;border-collapse:collapse;background:white;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                        <thead style="background:#333;color:white;">
+                            <tr>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Email</th>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Name</th>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Orders</th>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Total Spent</th>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Last Active</th>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clients-list"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <div style="margin-bottom: 20px;">
+                <h2>Business Analytics & Reports</h2>
+                <button onclick="loadReportsData()" style="padding:10px 20px;background:#ff6b35;color:white;border:none;border-radius:4px;cursor:pointer;margin-bottom:15px;">📊 Refresh Reports</button>
+            </div>
+            <div id="reports-loading" class="loading show">
+                <div class="spinner"></div>
+                <p>Generating reports...</p>
+            </div>
+            <div id="reports-content" style="display: none;">
+                <h3>Overall Performance</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <h3>Total Revenue</h3>
+                        <div class="number" id="total-revenue">KES 0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Orders</h3>
+                        <div class="number" id="total-orders-report">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Avg Order Value</h3>
+                        <div class="number" id="avg-order-value">KES 0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Customers</h3>
+                        <div class="number" id="total-customers">0</div>
+                    </div>
+                </div>
+
+                <h3>Last 30 Days Performance</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <h3>Revenue</h3>
+                        <div class="number" id="revenue-30d">KES 0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Orders</h3>
+                        <div class="number" id="orders-30d">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Avg Order Value</h3>
+                        <div class="number" id="avg-order-30d">KES 0</div>
+                    </div>
+                </div>
+
+                <h3>Customer Metrics</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <h3>Returning Customers</h3>
+                        <div class="number" id="returning-customers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Returning Rate</h3>
+                        <div class="number" id="returning-rate">0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>New Customers</h3>
+                        <div class="number" id="new-customers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Churn Rate</h3>
+                        <div class="number" id="churn-rate">0%</div>
+                    </div>
+                </div>
+
+                <h3>Top 10 Products (Last 30 Days)</h3>
+                <div style="overflow-x: auto;">
+                    <table style="width:100%;border-collapse:collapse;background:white;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                        <thead style="background:#333;color:white;">
+                            <tr>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Product Name</th>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Quantity Sold</th>
+                                <th style="padding:12px;text-align:left;border-bottom:1px solid #ddd;">Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top-products-list"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Tab -->
+        <div id="stats" class="tab-content">
+            <div class="stats" id="stats-container">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading statistics...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Product</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div id="modal-error" class="message error"></div>
+            <form id="edit-form">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="edit-product-name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="edit-product-category" required>
+                            <option value="Brushes & Applicators">Brushes & Applicators</option>
+                            <option value="Paints">Paints & Chemicals</option>
+                            <option value="plumbing">Plumbing</option>
+                            <option value="Tools">Tools & Hardware</option>
+                            <option value="structural">Structural Materials</option>
+                            <option value="fencing and roofing">Fencing & Roofing</option>
+                            <option value="Roofing">Roofing</option>
+                            <option value="Fencing & Wire">Fencing & Wire</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Unit</label>
+                        <input type="text" id="edit-product-unit" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (KES)</label>
+                        <input type="number" id="edit-product-price" step="0.01" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Product Image</label>
+                        <input type="file" id="edit-product-image-file" accept="image/*">
+                        <small style="color: #666; margin-top: 5px; display: block;">Upload JPG, PNG, or WebP (Max 5MB)</small>
+                        <div id="edit-image-upload-progress" style="display: none; margin-top: 10px;">
+                            <div style="background: #e9ecef; height: 20px; border-radius: 4px; overflow: hidden;">
+                                <div id="edit-progress-bar" style="background: #ff6b35; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>SKU</label>
+                        <input type="text" id="edit-product-sku">
+                    </div>
+                </div>
+                <input type="hidden" id="edit-product-image" value="">
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="edit-product-description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="edit-product-featured" style="width: 18px; height: 18px;">
+                        <span>Featured Product (Show on homepage)</span>
+                    </label>
+                </div>
+
+                <div>
+                    <button type="submit" class="submit-btn">Save Changes</button>
+                    <button type="button" class="reset-btn" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/config.js"></script>
+    <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

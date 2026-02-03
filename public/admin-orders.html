@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - Ithumba Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .nav-tabs button {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs button.active {
+            border-bottom-color: #3498db;
+            color: #3498db;
+        }
+
+        .nav-tabs button:hover {
+            background: #f0f0f0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filters input,
+        .filters select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .filters button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .filters button:hover {
+            background: #2980b9;
+        }
+
+        .btn-create {
+            background: #27ae60;
+        }
+
+        .btn-create:hover {
+            background: #229954;
+        }
+
+        .orders-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-processing {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-shipped {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .status-delivered {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-buttons button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+
+        .btn-view {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #2980b9;
+        }
+
+        .btn-edit {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #d68910;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .form-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-submit {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #229954;
+        }
+
+        .btn-cancel {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #7f8c8d;
+        }
+
+        .order-details {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .pagination button.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .pagination button:hover {
+            border-color: #3498db;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-content {
+            position: relative;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .breadcrumb {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #3498db;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .items-list {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            align-items: center;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📦 Order Management</h1>
+            <p>Manage all customer orders</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-button active" onclick="switchTab('orders')">All Orders</button>
+            <button class="tab-button" onclick="switchTab('create')">Create Order</button>
+        </div>
+
+        <!-- ORDERS TAB -->
+        <div id="orders" class="tab-content active">
+            <div class="stats-grid" id="statsGrid">
+                <!-- Stats will be loaded here -->
+            </div>
+
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="Search by order ID, email, phone, or name" onkeyup="loadOrders()">
+                <select id="statusFilter" onchange="loadOrders()">
+                    <option value="">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+                <button onclick="loadOrders()" class="btn-primary">🔄 Refresh</button>
+            </div>
+
+            <div id="message"></div>
+
+            <div class="orders-table">
+                <div id="ordersContainer">
+                    <div class="loading">Loading orders...</div>
+                </div>
+            </div>
+
+            <div class="pagination" id="pagination"></div>
+        </div>
+
+        <!-- CREATE ORDER TAB -->
+        <div id="create" class="tab-content">
+            <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h2>Create New Order</h2>
+                <form id="createOrderForm" onsubmit="createOrder(event)">
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Email</label>
+                        <input type="email" id="customerEmail">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Phone</label>
+                        <input type="tel" id="customerPhone">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Add Items</label>
+                        <div id="itemsContainer"></div>
+                        <button type="button" onclick="addItemRow()" class="btn-primary" style="margin-top: 10px;">+ Add Item</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="orderNotes" placeholder="Any special instructions..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="markAsPaid">
+                            Mark as Paid (Skip Payment)
+                        </label>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="button" class="btn-cancel" onclick="resetForm()">Clear</button>
+                        <button type="submit" class="btn-submit">Create Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER DETAILS MODAL -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('orderModal')">&times;</button>
+            <div id="orderDetails"></div>
+        </div>
+    </div>
+
+    <!-- EDIT ORDER MODAL -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('editModal')">&times;</button>
+            <h2>Edit Order</h2>
+            <form id="editForm" onsubmit="updateOrder(event)">
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="editStatus" required>
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tracking Number</label>
+                    <input type="text" id="editTracking" placeholder="e.g., TRK123456789">
+                </div>
+
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="editNotes"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="markAsPaidCheck">
+                        Mark as Paid (Admin Override)
+                    </label>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeModal('editModal')">Cancel</button>
+                    <button type="submit" class="btn-submit">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/public/config.js"></script>
+    <script>
+        let currentPage = 1;
+        let currentOrderId = null;
+
+        // Check authentication
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const userRole = localStorage.getItem('userRole');
+            
+            if (!token || userRole !== 'admin') {
+                window.location.href = '/login.html';
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'orders') {
+                loadStats();
+                loadOrders();
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/admin/orders/stats/summary', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    const statsHtml = `
+                        <div class="stat-card">
+                            <h3>Total Orders</h3>
+                            <div class="value">${data.stats.total}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Pending</h3>
+                            <div class="value">${data.stats.pending}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Paid</h3>
+                            <div class="value">${data.stats.paid}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Revenue</h3>
+                            <div class="value">KSh ${data.stats.totalRevenue.toLocaleString()}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Avg Order Value</h3>
+                            <div class="value">KSh ${data.stats.averageOrderValue.toLocaleString()}</div>
+                        </div>
+                    `;
+                    document.getElementById('statsGrid').innerHTML = statsHtml;
+                }
+            } catch (err) {
+                console.error('Error loading stats:', err);
+            }
+        }
+
+        async function loadOrders(page = 1) {
+            try {
+                const search = document.getElementById('searchInput').value;
+                const status = document.getElementById('statusFilter').value;
+                const token = localStorage.getItem('token');
+
+                const params = new URLSearchParams({
+                    limit: 20,
+                    page: page,
+                    ...(search && { search }),
+                    ...(status && { status })
+                });
+
+                const response = await fetch(`/api/admin/orders?${params}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayOrders(data.orders);
+                    displayPagination(data.pagination);
+                    currentPage = page;
+                }
+            } catch (err) {
+                console.error('Error loading orders:', err);
+                showMessage('Error loading orders', 'error');
+            }
+        }
+
+        function displayOrders(orders) {
+            console.log('📦 Displaying orders:', orders);
+            console.log('First order full details:', orders[0]); // Debug: show full first order structure
+            
+            if (orders.length === 0) {
+                document.getElementById('ordersContainer').innerHTML = '<div class="empty-state"><p>No orders found</p></div>';
+                return;
+            }
+
+            // Debug: check billingDetails structure
+            if (orders[0]) {
+                console.log('First order billingDetails:', orders[0].billingDetails);
+                console.log('Type of billingDetails:', typeof orders[0].billingDetails);
+            }
+
+            const html = `
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px; text-align: left; background-color: var(--header-bg); color: white;">Order ID</th>
+                            <th style="padding: 12px; text-align: left; background-color: var(--header-bg); color: white;">Customer</th>
+                            <th style="padding: 12px; text-align: left; background-color: var(--header-bg); color: white; min-width: 120px;">Phone</th>
+                            <th style="padding: 12px; text-align: left; background-color: var(--header-bg); color: white;">Total</th>
+                            <th style="padding: 12px; text-align: left; background-color: var(--header-bg); color: white;">Status</th>
+                            <th style="padding: 12px; text-align: left; background-color: var(--header-bg); color: white;">Date</th>
+                            <th style="padding: 12px; text-align: left; background-color: var(--header-bg); color: white;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${orders.map((order, idx) => {
+                            console.log(`Order ${idx} - Full structure:`, JSON.stringify(order, null, 2));
+                            console.log(`Order ${idx} - billingDetails:`, order.billingDetails);
+                            console.log(`Order ${idx} - Phone value:`, order.billingDetails?.phone);
+                            
+                            const phone = order.billingDetails?.phone || 'N/A';
+                            const phoneLink = phone !== 'N/A' ? `tel:${phone}` : '#';
+                            
+                            return `
+                            <tr style="border-bottom: 1px solid #e0e0e0;">
+                                <td style="padding: 12px;"><strong>${order.orderId}</strong></td>
+                                <td style="padding: 12px;">${order.billingDetails?.firstName || ''} ${order.billingDetails?.lastName || ''}</td>
+                                <td style="padding: 12px; min-width: 120px;"><a href="${phoneLink}" style="color: #FF4E00; text-decoration: none; font-weight: 500;">${phone}</a></td>
+                                <td style="padding: 12px;">KSh ${order.total?.toLocaleString() || 0}</td>
+                                <td style="padding: 12px;"><span class="status-badge status-${order.status}">${order.status.toUpperCase()}</span></td>
+                                <td style="padding: 12px;">${new Date(order.createdAt).toLocaleDateString()}</td>
+                                <td style="padding: 12px;">
+                                    <div class="action-buttons">
+                                        <button class="btn-view" onclick="viewOrder('${order.id}')">View</button>
+                                        <button class="btn-edit" onclick="editOrderModal('${order.id}')">Edit</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `}).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('ordersContainer').innerHTML = html;
+        }
+
+        function displayPagination(pagination) {
+            const html = pagination.pages > 1 ? `
+                ${pagination.page > 1 ? `<button onclick="loadOrders(${pagination.page - 1})">← Previous</button>` : ''}
+                ${Array.from({length: pagination.pages}, (_, i) => `
+                    <button ${i + 1 === pagination.page ? 'class="active"' : ''} onclick="loadOrders(${i + 1})">${i + 1}</button>
+                `).join('')}
+                ${pagination.page < pagination.pages ? `<button onclick="loadOrders(${pagination.page + 1})">Next →</button>` : ''}
+            ` : '';
+
+            document.getElementById('pagination').innerHTML = html;
+        }
+
+        async function viewOrder(orderId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/admin/orders/${orderId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const order = data.order;
+                    const html = `
+                        <h2>${order.orderId}</h2>
+                        <div class="order-details">
+                            <h3>Customer Information</h3>
+                            <div class="item-row">
+                                <div><strong>Name:</strong> ${order.billingDetails?.firstName || ''} ${order.billingDetails?.lastName || ''}</div>
+                                <div><strong>Email:</strong> ${order.billingDetails?.email || 'N/A'}</div>
+                            </div>
+                            <div class="item-row">
+                                <div><strong>Phone:</strong> ${order.billingDetails?.phone || 'N/A'}</div>
+                                <div><strong>City:</strong> ${order.billingDetails?.city || 'N/A'}</div>
+                            </div>
+
+                            <h3 style="margin-top: 20px;">Order Details</h3>
+                            <div class="item-row">
+                                <div><strong>Status:</strong> <span class="status-badge status-${order.status}">${order.status.toUpperCase()}</span></div>
+                                <div><strong>Created:</strong> ${new Date(order.createdAt).toLocaleString()}</div>
+                            </div>
+
+                            <h3 style="margin-top: 20px;">Items (${order.items?.length || 0})</h3>
+                            ${order.items?.map(item => `
+                                <div class="item-row">
+                                    <div><strong>${item.name}</strong></div>
+                                    <div>${item.quantity} × KSh ${item.price?.toLocaleString() || 0}</div>
+                                    <div>=</div>
+                                    <div>KSh ${item.subtotal?.toLocaleString() || 0}</div>
+                                </div>
+                            `).join('') || ''}
+
+                            <div class="item-row" style="margin-top: 15px; border-top: 2px solid #ddd; padding-top: 15px;">
+                                <div></div>
+                                <div><strong>Subtotal:</strong></div>
+                                <div></div>
+                                <div><strong>KSh ${order.subtotal?.toLocaleString() || 0}</strong></div>
+                            </div>
+                            <div class="item-row">
+                                <div></div>
+                                <div><strong>Shipping:</strong></div>
+                                <div></div>
+                                <div><strong>KSh ${order.shipping?.toLocaleString() || 0}</strong></div>
+                            </div>
+                            <div class="item-row">
+                                <div></div>
+                                <div><strong>TOTAL:</strong></div>
+                                <div></div>
+                                <div><strong style="font-size: 18px;">KSh ${order.total?.toLocaleString() || 0}</strong></div>
+                            </div>
+
+                            ${order.trackingNumber ? `
+                                <div class="item-row" style="margin-top: 15px;">
+                                    <div><strong>Tracking:</strong> ${order.trackingNumber}</div>
+                                </div>
+                            ` : ''}
+
+                            ${order.notes ? `
+                                <div class="item-row" style="margin-top: 15px;">
+                                    <div><strong>Notes:</strong> ${order.notes}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="button" class="btn-cancel" onclick="closeModal('orderModal')">Close</button>
+                            <button type="button" class="btn-edit" onclick="editOrderModal('${orderId}')">Edit</button>
+                        </div>
+                    `;
+
+                    document.getElementById('orderDetails').innerHTML = html;
+                    document.getElementById('orderModal').classList.add('active');
+                }
+            } catch (err) {
+                console.error('Error viewing order:', err);
+                showMessage('Error loading order details', 'error');
+            }
+        }
+
+        async function editOrderModal(orderId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/admin/orders/${orderId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const order = data.order;
+                    currentOrderId = orderId;
+                    
+                    document.getElementById('editStatus').value = order.status;
+                    document.getElementById('editTracking').value = order.trackingNumber || '';
+                    document.getElementById('editNotes').value = order.notes || '';
+                    document.getElementById('markAsPaidCheck').checked = order.status === 'paid';
+
+                    document.getElementById('orderModal').classList.remove('active');
+                    document.getElementById('editModal').classList.add('active');
+                }
+            } catch (err) {
+                console.error('Error opening edit modal:', err);
+                showMessage('Error loading order', 'error');
+            }
+        }
+
+        async function updateOrder(e) {
+            e.preventDefault();
+
+            try {
+                const token = localStorage.getItem('token');
+                const status = document.getElementById('editStatus').value;
+                const trackingNumber = document.getElementById('editTracking').value;
+                const notes = document.getElementById('editNotes').value;
+                const markAsPaid = document.getElementById('markAsPaidCheck').checked;
+
+                // First update order status
+                const updateResponse = await fetch(`/api/admin/orders/${currentOrderId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: markAsPaid ? 'paid' : status,
+                        trackingNumber,
+                        notes
+                    })
+                });
+
+                // If marking as paid, call the mark-paid endpoint
+                if (markAsPaid) {
+                    const paidResponse = await fetch(`/api/admin/orders/${currentOrderId}/mark-paid`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ paymentMethod: 'admin-override' })
+                    });
+
+                    const paidData = await paidResponse.json();
+                    if (!paidData.success) {
+                        throw new Error('Failed to mark as paid');
+                    }
+                }
+
+                showMessage('Order updated successfully!', 'success');
+                closeModal('editModal');
+                loadOrders(currentPage);
+            } catch (err) {
+                console.error('Error updating order:', err);
+                showMessage('Error updating order: ' + err.message, 'error');
+            }
+        }
+
+        function addItemRow() {
+            const container = document.getElementById('itemsContainer');
+            const rowHtml = `
+                <div class="item-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px;">
+                    <input type="text" placeholder="Product name" class="item-name" required>
+                    <input type="number" placeholder="Quantity" class="item-quantity" min="1" value="1" required>
+                    <input type="number" placeholder="Price" class="item-price" min="0" step="0.01" required>
+                    <button type="button" onclick="this.parentElement.remove()" style="background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">×</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', rowHtml);
+        }
+
+        async function createOrder(e) {
+            e.preventDefault();
+
+            try {
+                const token = localStorage.getItem('token');
+                const customerName = document.getElementById('customerName').value;
+                const customerEmail = document.getElementById('customerEmail').value;
+                const customerPhone = document.getElementById('customerPhone').value;
+                const notes = document.getElementById('orderNotes').value;
+                const markAsPaid = document.getElementById('markAsPaid').checked;
+
+                // Collect items
+                const itemElements = document.querySelectorAll('.item-name');
+                if (itemElements.length === 0) {
+                    showMessage('Please add at least one item', 'error');
+                    return;
+                }
+
+                const items = Array.from(document.querySelectorAll('.item-row')).map((row, i) => ({
+                    name: row.querySelector('.item-name').value,
+                    quantity: parseInt(row.querySelector('.item-quantity').value),
+                    price: parseFloat(row.querySelector('.item-price').value)
+                }));
+
+                const response = await fetch('/api/admin/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        customerName,
+                        customerEmail,
+                        customerPhone,
+                        items,
+                        notes,
+                        markAsPaid
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage('Order created successfully!', 'success');
+                    resetForm();
+                    document.querySelector('[onclick="switchTab(\'orders\')"]').click();
+                } else {
+                    showMessage('Error: ' + data.message, 'error');
+                }
+            } catch (err) {
+                console.error('Error creating order:', err);
+                showMessage('Error creating order', 'error');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('createOrderForm').reset();
+            document.getElementById('itemsContainer').innerHTML = '';
+            addItemRow();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+            setTimeout(() => messageDiv.textContent = '', 5000);
+        }
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            resetForm();
+        });
+
+        // Click outside modal to close
+        window.onclick = function(e) {
+            const orderModal = document.getElementById('orderModal');
+            const editModal = document.getElementById('editModal');
+            
+            if (e.target === orderModal) {
+                orderModal.classList.remove('active');
+            }
+            if (e.target === editModal) {
+                editModal.classList.remove('active');
+            }
+        };
+    </script>
+</body>
+</html>

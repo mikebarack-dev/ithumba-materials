@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Product | Ithumba Materials</title> 
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    
+    <nav class="navbar-container">
+        </nav>
+
+    <div class="container product-detail-container">
+        
+        <div class="product-header">
+            <h1 id="product-name">Loading...</h1>
+        </div>
+        
+        <div class="product-info-grid">
+            <div class="product-image-section">
+                <img src="https://placehold.co/400x300/6a2e35/ffffff?text=Product+Image" alt="Product Image" class="product-detail-img">
+            </div>
+            
+            <div class="product-details-section">
+                <h2>Product Details</h2>
+                
+                <p class="price-large">Price: <span id="product-price">Ksh Loading...</span></p>
+                <p id="product-unit">Unit: Loading...</p>
+                
+                <div class="quantity-controls">
+                    <label for="quantity-input">Quantity:</label>
+                    <input type="number" id="quantity-input" value="1" min="1">
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="add-to-cart-btn" class="btn btn-primary">Add to Cart</button>
+                    <button id="add-to-wishlist-btn" class="btn btn-secondary">Add to Wishlist</button>
+                </div>
+                
+                <h3 style="margin-top: 30px;">Description</h3>
+                <p id="product-description">Loading description...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script> 
+    <script type="module" src="./js/utils.js"></script>
+    <script type="module" src="./js/product-detail.js"></script>
+    
+</body>
+</html>

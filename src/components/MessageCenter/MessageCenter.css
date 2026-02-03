@@ -1,0 +1,39 @@
+/* MessageCenter Styles */
+
+.message-center {
+  font-family: Arial, sans-serif;
+  padding: 16px;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 16px;
+}
+
+.tab {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+  border-bottom: 2px solid #007bff;
+  font-weight: bold;
+}
+
+.badge {
+  background-color: #ff0000;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.content {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

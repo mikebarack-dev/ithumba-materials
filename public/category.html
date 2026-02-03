@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structural Materials | Ithumba</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar-container">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo">Ithumba Materials</a>
+            <div>
+                <button id="menu-toggle">☰</button>
+                <ul class="nav-list" id="nav-links">
+                    <li><a href="structural.html">Structural</a></li>
+                    <li><a href="plumbing.html">Plumbing</a></li>
+                    <li><a href="fencing-roofing.html">Fencing & Roofing</a></li>
+                    <li><a href="paints.html">Paints</a></li>
+                    <li><a href="tools.html">Tools</a></li>
+                    <li><a href="brushes.html">Brushes</a></li>
+                    <li><a href="wishlist.html">Wishlist</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 id="category-title">Loading Category...</h1>
+
+        <div class="search-cart-container">
+            <input type="text" id="search-bar" placeholder="Search for products...">
+            <button id="cart-button" onclick="location.href='/cart.html'">Cart</button>
+        </div>
+
+        <section>
+            <h2>Filter by Price</h2>
+            <div class="filter-container">
+                <label for="price-filter">Max Price:</label>
+                <input type="number" id="price-filter" placeholder="Enter max price">
+                <button id="apply-filter">Apply</button>
+            </div>
+        </section>
+
+        <div id="category-products" class="product-grid">
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script type="module" src="utils.js"></script>
+    <script type="module" src="category.js"></script>
+
+    <script>
+        // Mobile navigation logic (as provided)
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+       
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Enhanced search with backend integration
+        document.getElementById('search-bar').addEventListener('input', function() {
+            const query = this.value.trim();
+            const categoryName = document.getElementById('category-title')?.textContent || '';
+            
+            if (!query) {
+                // If empty, show all products by reloading
+                location.reload();
+                return;
+            }
+            
+            // Search within current category if available
+            const searchUrl = `/api/products?search=${encodeURIComponent(query)}` + 
+                            (categoryName ? `&category=${encodeURIComponent(categoryName)}` : '');
+            
+            fetch(searchUrl)
+                .then(res => res.json())
+                .then(products => {
+                    const grid = document.querySelector('.product-grid');
+                    if (grid) {
+                        if (products.length === 0) {
+                            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #999;"><p>No products found</p></div>';
+                        } else {
+                            // Re-render products
+                            grid.innerHTML = '';
+                            products.forEach(product => {
+                                const productCard = document.createElement('div');
+                                productCard.className = 'product-card';
+                                productCard.setAttribute('data-price', product.price || 0);
+                                productCard.innerHTML = `
+                                    <img src="${product.image || 'placeholder.jpg'}" alt="${product.name}">
+                                    <h3>${product.name}</h3>
+                                    <p>R${product.price || 0}</p>
+                                    <button onclick="addToCart('${product.id}', '${product.name}', ${product.price || 0})">Add to Cart</button>
+                                `;
+                                grid.appendChild(productCard);
+                            });
+                        }
+                    }
+                })
+                .catch(err => console.error('Search error:', err));
+        });
+
+        document.getElementById('apply-filter').addEventListener('click', function() {
+            const maxPrice = parseFloat(document.getElementById('price-filter').value);
+            const products = document.querySelectorAll('.product-grid > div');
+            products.forEach(product => {
+                const price = parseFloat(product.getAttribute('data-price'));
+                product.style.display = price <= maxPrice ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+

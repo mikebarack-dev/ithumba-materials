@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist | Ithumba Materials</title>
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+    }
+
+    .navbar-container {
+        background-color: #6a2e35;
+        color: white;
+        padding: 10px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #6a2e35;
+        color: white;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        background-color: #6a2e35;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #a0404c;
+    }
+</style>
+</head>
+<body>
+    <nav class="navbar-container">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo">Ithumba Materials</a>
+            <div>
+                <button id="menu-toggle">☰</button>
+                <ul id="nav-links">
+                    <li><a href="structural.html">Structural</a></li>
+                    <li><a href="plumbing.html">Plumbing</a></li>
+                    <li><a href="fencing-roofing.html">Fencing & Roofing</a></li>
+                    <li><a href="paints.html">Paints</a></li>
+                    <li><a href="tools.html">Tools</a></li>
+                    <li><a href="brushes.html">Brushes</a></li>
+                    <li><a href="wishlist.html">Wishlist</a></li>
+                    <li><a href="/messages">📧 Messages</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>My Permanent Wishlist</h1>
+
+        <p id="wishlist-feedback" style="text-align: center; color: #6a2e35; font-weight: bold;"></p>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Unit</th>
+                        <th>Price (Ksh)</th>
+                        <th style="width: 180px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="wishlist-body">
+                    </tbody>
+                <tfoot id="wishlist-footer">
+                    </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <script src="config.js"></script> 
+    <script type="module" src="./js/wishlist.js"></script>
+    
+    <script>
+        // Load wishlist from localStorage
+        function loadWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const wishlistBody = document.getElementById('wishlist-body');
+            const feedbackContainer = document.getElementById('wishlist-feedback');
+            
+            if (wishlist.length === 0) {
+                wishlistBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: #999;">Your wishlist is empty</td></tr>';
+                feedbackContainer.textContent = 'No items in your wishlist yet';
+                return;
+            }
+            
+            feedbackContainer.textContent = `${wishlist.length} item(s) in your wishlist`;
+            wishlistBody.innerHTML = '';
+            
+            wishlist.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>pc</td>
+                    <td>KSh ${item.price.toLocaleString()}</td>
+                    <td>
+                        <button onclick="moveToCart(${index})" style="background-color: #4CAF50; margin-right: 5px;">🛒 Move to Cart</button>
+                        <button onclick="removeFromWishlist(${index})" style="background-color: #f44336;">🗑️ Remove</button>
+                    </td>
+                `;
+                wishlistBody.appendChild(row);
+            });
+        }
+        
+        // Move item from wishlist to cart
+        window.moveToCart = function(index) {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const item = wishlist[index];
+            
+            // Add to cart
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existing = cart.find(c => c.id === item.id);
+            
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Remove from wishlist
+            wishlist.splice(index, 1);
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            
+            alert(`✅ ${item.name} moved to cart!`);
+            loadWishlist();
+        }
+        
+        // Remove item from wishlist
+        window.removeFromWishlist = function(index) {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const item = wishlist[index];
+            
+            if (confirm(`Remove ${item.name} from wishlist?`)) {
+                wishlist.splice(index, 1);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                alert(`${item.name} removed from wishlist`);
+                loadWishlist();
+            }
+        }
+        
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadWishlist);
+    </script>
+</body>
+</html>
