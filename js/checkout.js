@@ -718,8 +718,14 @@ window.createOrderWithCash = async function() {
         });
 
         if (!orderResponse.ok) {
-            const errorData = await orderResponse.json();
-            throw new Error(errorData.message || 'Failed to create order');
+            try {
+                const errorData = await orderResponse.json();
+                console.error('❌ Server error:', errorData);
+                throw new Error(errorData.error || errorData.message || `Failed to create order (${orderResponse.status})`);
+            } catch (e) {
+                console.error('❌ Could not parse error response:', orderResponse.status);
+                throw new Error(`Failed to create order: ${orderResponse.status} ${orderResponse.statusText}`);
+            }
         }
 
         const orderData = await orderResponse.json();

@@ -87,8 +87,22 @@
         </div>
     </footer>
 
-    <!-- Load Firebase config first, then homepage as module -->
+    <!-- Load Firebase config and SDK first, then homepage as module -->
     <script src="./config.js"></script>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        
+        // Initialize Firebase
+        const config = JSON.parse(window.__firebase_config);
+        const app = initializeApp(config);
+        const auth = getAuth(app);
+        
+        // Make getAuth available globally for other scripts
+        window.getAuth = () => auth;
+        window.onAuthStateChanged = onAuthStateChanged;
+    </script>
     <script type="module" src="./js/homepage.js"></script>
 
     <script>
@@ -168,7 +182,11 @@
     </nav>
 
     <!-- Initialize cart from server on page load -->
-    <script>
+    <script type="module">
+        // Import getAuth from Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
         document.addEventListener('DOMContentLoaded', function() {
             // Clear old localStorage cart to sync with server
             localStorage.removeItem('cart');
@@ -179,32 +197,48 @@
             // Wait a bit for Firebase to initialize
             setTimeout(async () => {
                 try {
-                    // Try to get the current user from Firebase
-                    const unsubscribe = getAuth && getAuth().onAuthStateChanged ? 
-                        getAuth().onAuthStateChanged(async (user) => {
-                            if (user) {
-                                // User is logged in - fetch cart from server
-                                const token = await user.getIdToken(true);
-                                const response = await fetch('/api/cart', {
-                                    headers: {
-                                        'Authorization': `Bearer ${token}`
-                                    }
-                                });
-                                if (response.ok) {
-                                    const cartItems = await response.json();
-                                    const count = Array.isArray(cartItems) ? cartItems.length : 0;
-                                    const badge = document.querySelector('.cart-badge');
-                                    if (badge) {
-                                        badge.textContent = count;
-                                        console.log('✅ Cart badge updated to:', count);
-                                    }
+                    // Wait for config to be available
+                    let config;
+                    let attempts = 0;
+                    while (!window.__firebase_config && attempts < 50) {
+                        await new Promise(r => setTimeout(r, 100));
+                        attempts++;
+                    }
+                    
+                    if (!window.__firebase_config) {
+                        console.warn('Firebase config not found');
+                        return;
+                    }
+                    
+                    config = JSON.parse(window.__firebase_config);
+                    const app = initializeApp(config);
+                    const auth = getAuth(app);
+                    
+                    // Listen for auth state changes
+                    onAuthStateChanged(auth, async (user) => {
+                        if (user) {
+                            // User is logged in - fetch cart from server
+                            const token = await user.getIdToken(true);
+                            const response = await fetch('/api/cart', {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`
                                 }
-                            } else {
-                                // No user - set badge to 0
+                            });
+                            if (response.ok) {
+                                const cartItems = await response.json();
+                                const count = Array.isArray(cartItems) ? cartItems.length : 0;
                                 const badge = document.querySelector('.cart-badge');
-                                if (badge) badge.textContent = '0';
+                                if (badge) {
+                                    badge.textContent = count;
+                                    console.log('✅ Cart badge updated to:', count);
+                                }
                             }
-                        }) : null;
+                        } else {
+                            // No user - set badge to 0
+                            const badge = document.querySelector('.cart-badge');
+                            if (badge) badge.textContent = '0';
+                        }
+                    });
                 } catch (error) {
                     console.error('Error updating cart badge:', error);
                 }
