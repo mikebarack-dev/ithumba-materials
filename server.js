@@ -66,6 +66,9 @@ app.use(helmet({
     }
 }));
 
+// ✅ Enable trust proxy for rate limiting behind reverse proxies (Render, Heroku, etc)
+app.set('trust proxy', 1);
+
 // ✅ SECURITY: Enforce HTTPS in production
 if (process.env.NODE_ENV === 'production') {
     app.use((req, res, next) => {

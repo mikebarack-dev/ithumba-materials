@@ -1,9 +1,17 @@
 const admin = require('firebase-admin');
 const path = require('path');
 
-// Initialize Firebase Admin
-const serviceAccountPath = path.join(__dirname, 'ithumba-materials-key.json');
-const serviceAccount = require(serviceAccountPath);
+// Initialize Firebase Admin - support environment variable or file
+let serviceAccount;
+
+if (process.env.FIREBASE_KEY_JSON) {
+  console.log('📌 Loading Firebase key from environment variable...');
+  serviceAccount = JSON.parse(process.env.FIREBASE_KEY_JSON);
+} else {
+  const serviceAccountPath = path.join(__dirname, 'ithumba-materials-key.json');
+  serviceAccount = require(serviceAccountPath);
+  console.log('📌 Loading Firebase key from file...');
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
