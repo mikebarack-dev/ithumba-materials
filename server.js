@@ -113,7 +113,9 @@ app.use(fileUpload({
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
     abortOnLimit: true
 }));
+// Serve both /public and /js directories as static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
 app.use(compression()); // Compress all routes
 
 // ✅ SECURITY: Apply rate limiting to all API routes
