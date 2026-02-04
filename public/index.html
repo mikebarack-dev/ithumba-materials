@@ -11,14 +11,15 @@
 <body>
     <nav class="navbar-container">
         <div class="navbar-logo">Ithumba Materials</div>
-        <input id="search-bar" type="text" placeholder="Search for products..." style="margin: 10px; padding: 5px; width: 300px;">
+        <button id="menu-toggle">☰</button>
+        <input id="search-bar" type="text" placeholder="Search products..." style="margin: 0; padding: 6px 12px; font-size: 13px;">
         <div id="nav-links" class="nav-links">
-            <a href="https://wa.me/254704713885" target="_blank" class="nav-btn" style="color: #25d366; font-size: 18px; text-decoration: none;" title="Chat with us on WhatsApp">💬 WhatsApp</a>
-            <button id="cart-btn" class="nav-btn cart-btn" onclick="location.href='/cart.html'">Cart <span class="cart-badge">0</span></button>
-            <a href="order-history.html" class="navbar-link nav-btn">📦 My Orders</a>
-            <a href="profile.html" class="navbar-link nav-btn">Profile</a>
-            <a href="login.html" class="navbar-link nav-btn">Login</a>
-            <a href="/messages" class="navbar-link nav-btn" style="position: relative;">Messages <span id="unread-badge" class="unread-badge" style="position: absolute; top: -8px; right: -8px; background: #ff6b35; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; display: none;">0</span></a>
+            <a href="https://wa.me/254704713885" target="_blank" class="nav-btn" title="Chat on WhatsApp">💬 WhatsApp</a>
+            <a href="/messages" class="navbar-link nav-btn" title="Messages">💌 Messages</a>
+            <button id="cart-btn" class="nav-btn cart-btn" onclick="location.href='/cart.html'">🛒 Cart <span class="cart-badge">0</span></button>
+            <a href="order-history.html" class="navbar-link nav-btn" title="My Orders">📦 Orders</a>
+            <a href="profile.html" class="navbar-link nav-btn" title="Profile">👤 Profile</a>
+            <a href="login.html" class="navbar-link nav-btn" title="Login">🔐 Login</a>
         </div>
     </nav>
 
@@ -116,26 +117,32 @@
                     if(window.innerWidth <= 768){
                         menuToggle.style.display = 'block';
                         navLinks.style.display = 'none';
-                        navLinks.style.flexDirection = 'column';
-                        navLinks.style.backgroundColor = '#6a2e35';
-                        navLinks.style.position = 'absolute';
-                        navLinks.style.top = '50px';
-                        navLinks.style.right = '10px';
-                        navLinks.style.padding = '10px';
-                        navLinks.style.borderRadius = '5px';
                     } else {
                         menuToggle.style.display = 'none';
                         navLinks.style.display = 'flex';
-                        navLinks.style.position = 'static';
-                        navLinks.style.flexDirection = 'row';
-                        navLinks.style.backgroundColor = 'transparent';
                     }
                 }
             }
 
             if (menuToggle && navLinks) {
                 menuToggle.addEventListener('click', () => {
-                    navLinks.style.display = navLinks.style.display === 'none' ? 'flex' : 'none';
+                    if (navLinks.style.display === 'none' || navLinks.style.display === '') {
+                        navLinks.style.display = 'flex';
+                        navLinks.classList.add('active');
+                    } else {
+                        navLinks.style.display = 'none';
+                        navLinks.classList.remove('active');
+                    }
+                });
+
+                // Close menu when a link is clicked
+                navLinks.querySelectorAll('a, button').forEach(el => {
+                    el.addEventListener('click', () => {
+                        if (window.innerWidth <= 768) {
+                            navLinks.style.display = 'none';
+                            navLinks.classList.remove('active');
+                        }
+                    });
                 });
 
                 window.addEventListener('resize', checkWidth);
