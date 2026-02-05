@@ -662,6 +662,13 @@ window.loadClientsData = async function() {
         console.log('📋 clientsList element found:', !!clientsList);
         console.log('📋 clientsList element display:', clientsList ? window.getComputedStyle(clientsList).display : 'N/A');
         
+        // Check table element
+        const table = clientsList ? clientsList.closest('table') : null;
+        const tableParent = table ? table.parentElement : null;
+        console.log('📋 table element found:', !!table);
+        console.log('📋 table display:', table ? window.getComputedStyle(table).display : 'N/A');
+        console.log('📋 table parent display:', tableParent ? window.getComputedStyle(tableParent).display : 'N/A');
+        
         if (!clientsData.clients || clientsData.clients.length === 0) {
             console.warn('⚠️ No clients found in data');
             clientsList.innerHTML = '<tr><td colspan="6" style="padding:20px;text-align:center;color:#999;">No clients found</td></tr>';
@@ -686,6 +693,16 @@ window.loadClientsData = async function() {
             clientsList.innerHTML = html;
             console.log('✅ HTML set to clients-list');
             console.log('📋 clientsList after innerHTML:', clientsList.innerHTML.substring(0, 100));
+            
+            // Force visibility of table
+            if (table) {
+                table.style.display = 'table';
+                console.log('🔧 Forced table display to table');
+            }
+            if (tableParent && tableParent.id !== 'clients-content') {
+                tableParent.style.display = 'block';
+                console.log('🔧 Forced table parent display to block');
+            }
         }
         
         document.getElementById('clients-loading').classList.remove('show');
