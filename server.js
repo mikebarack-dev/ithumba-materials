@@ -18,8 +18,12 @@ try {
     
     // Try to load from environment variable first (for Render)
     if (process.env.FIREBASE_KEY_JSON) {
-        console.log("Loading Firebase key from environment variable...");
+        console.log("Loading Firebase key from environment variable (JSON)...");
         serviceAccount = JSON.parse(process.env.FIREBASE_KEY_JSON);
+    } else if (process.env.FIREBASE_KEY_BASE64) {
+        console.log("Loading Firebase key from environment variable (Base64)...");
+        const keyJson = Buffer.from(process.env.FIREBASE_KEY_BASE64, 'base64').toString('utf8');
+        serviceAccount = JSON.parse(keyJson);
     } else {
         // Fall back to file (for local development)
         const serviceAccountPath = path.resolve(__dirname, process.env.SERVICE_ACCOUNT_PATH || 'ithumba-materials-key.json');
