@@ -659,6 +659,8 @@ window.loadClientsData = async function() {
         const clientsList = document.getElementById('clients-list');
         console.log('📋 clientsData.clients:', clientsData.clients);
         console.log('📋 Number of clients:', clientsData.clients ? clientsData.clients.length : 'undefined');
+        console.log('📋 clientsList element found:', !!clientsList);
+        console.log('📋 clientsList element display:', clientsList ? window.getComputedStyle(clientsList).display : 'N/A');
         
         if (!clientsData.clients || clientsData.clients.length === 0) {
             console.warn('⚠️ No clients found in data');
@@ -683,6 +685,7 @@ window.loadClientsData = async function() {
             console.log('✅ HTML generated, length:', html.length);
             clientsList.innerHTML = html;
             console.log('✅ HTML set to clients-list');
+            console.log('📋 clientsList after innerHTML:', clientsList.innerHTML.substring(0, 100));
         }
         
         document.getElementById('clients-loading').classList.remove('show');
