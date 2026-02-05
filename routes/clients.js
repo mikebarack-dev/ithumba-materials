@@ -7,6 +7,8 @@ const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
 const firestore = admin.firestore();
+const authMiddleware = require('../middleware/auth');
+const { isAdmin } = require('../middleware/auth');
 
 // In-memory storage for client activity
 let clientActivity = {};
@@ -97,9 +99,6 @@ router.get('/', async (req, res) => {
         });
     }
 });
-
-// Import admin check middleware
-const { authMiddleware, isAdmin } = require('../middleware/auth');
 
 /**
  * GET /api/clients/activity
