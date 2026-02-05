@@ -657,21 +657,32 @@ window.loadClientsData = async function() {
         
         // Populate clients table
         const clientsList = document.getElementById('clients-list');
+        console.log('📋 clientsData.clients:', clientsData.clients);
+        console.log('📋 Number of clients:', clientsData.clients ? clientsData.clients.length : 'undefined');
+        
         if (!clientsData.clients || clientsData.clients.length === 0) {
+            console.warn('⚠️ No clients found in data');
             clientsList.innerHTML = '<tr><td colspan="6" style="padding:20px;text-align:center;color:#999;">No clients found</td></tr>';
         } else {
-            clientsList.innerHTML = clientsData.clients.map(client => `
+            console.log('🎨 Rendering', clientsData.clients.length, 'clients...');
+            const html = clientsData.clients.map((client, index) => {
+                console.log(`Client ${index}:`, client);
+                return `
                 <tr style="border-bottom:1px solid #ddd;">
-                    <td style="padding:12px;"><strong>${client.email}</strong></td>
-                    <td style="padding:12px;">${client.displayName}</td>
-                    <td style="padding:12px;text-align:center;">${client.orderCount}</td>
-                    <td style="padding:12px;"><strong>KES ${parseFloat(client.totalSpent).toLocaleString()}</strong></td>
-                    <td style="padding:12px;">${client.lastSignIn}</td>
+                    <td style="padding:12px;"><strong>${client.email || 'N/A'}</strong></td>
+                    <td style="padding:12px;">${client.displayName || 'N/A'}</td>
+                    <td style="padding:12px;text-align:center;">${client.orderCount || 0}</td>
+                    <td style="padding:12px;"><strong>KES ${parseFloat(client.totalSpent || 0).toLocaleString()}</strong></td>
+                    <td style="padding:12px;">${client.lastSignIn || 'N/A'}</td>
                     <td style="padding:12px;">
                         <button onclick="viewClientDetails('${client.uid}')" style="padding:6px 12px;background:#007bff;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px;">View</button>
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
+            console.log('✅ HTML generated, length:', html.length);
+            clientsList.innerHTML = html;
+            console.log('✅ HTML set to clients-list');
         }
         
         document.getElementById('clients-loading').classList.remove('show');
