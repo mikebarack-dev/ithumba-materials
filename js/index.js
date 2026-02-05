@@ -231,12 +231,18 @@ function fetchProducts() {
 document.addEventListener('DOMContentLoaded', () => {
     // Add null check for menuToggle
     const menuToggle = document.getElementById('menu-toggle');
-    if (menuToggle) {
+    const navLinks = document.getElementById('nav-links');
+    
+    if (menuToggle && navLinks) {
         menuToggle.addEventListener('click', () => {
-            const navLinks = document.getElementById('nav-links');
-            if (navLinks) {
-                navLinks.style.display = navLinks.style.display === 'none' ? 'block' : 'none';
-            }
+            navLinks.classList.toggle('show');
+        });
+        
+        // Close menu when a link is clicked
+        navLinks.querySelectorAll('a, button').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('show');
+            });
         });
     }
 
