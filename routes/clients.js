@@ -99,13 +99,13 @@ router.get('/', async (req, res) => {
 });
 
 // Import admin check middleware
-const { isAdmin } = require('../middleware/auth');
+const { authMiddleware, isAdmin } = require('../middleware/auth');
 
 /**
  * GET /api/clients/activity
  * Get real-time activity data (ADMIN ONLY)
  */
-router.get('/activity', isAdmin, async (req, res) => {
+router.get('/activity', authMiddleware, isAdmin, async (req, res) => {
     try {
         console.log('📊 [CLIENTS API] Fetching activity data...');
         let recentOrders = [];
