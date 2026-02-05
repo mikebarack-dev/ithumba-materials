@@ -36,9 +36,11 @@ const authMiddleware = async (req, res, next) => {
         
         // 4. Attachment: Add UID to request for the next function to use
         req.userId = decodedToken.uid;
+        console.log(`✅ Token verified for user: ${decodedToken.uid}`);
         next();
     } catch (error) {
-        logger.warn({ type: 'TOKEN_VERIFICATION_FAILED', error: error.code, ip: req.ip });
+        console.error('❌ Token verification failed:', error.message, error.code);
+        logger.warn({ type: 'TOKEN_VERIFICATION_FAILED', error: error.code, message: error.message, ip: req.ip });
         return res.status(403).json({ error: 'Forbidden: Invalid or expired token.' });
     }
 };
